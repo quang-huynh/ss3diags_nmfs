@@ -23,7 +23,7 @@ if (file.exists(file.path(run_tmp, "ss3")) || file.exists(file.path(run_tmp, "ss
   retroModels <- r4ss::SSgetoutput(
     dirvec = file.path(run_tmp, "retrospectives", paste0("retro", 0:-3))
   )
-  retrosum.simple <<- r4ss::SSsummarize(retroModels)
+  retrosum.simple <- r4ss::SSsummarize(retroModels)
 }
 
 # Clean up on exit
