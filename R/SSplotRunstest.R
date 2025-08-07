@@ -186,7 +186,7 @@ SSplotRunstest <- function(ss3rep,
   subplots <- subplots[1]
   datatypes <- c("Index", "Mean length", "Mean age", "Conditional age-at-length")
   ylabel <- datatypes[which(c("cpue", "len", "age", "con") %in% subplots)]
-  if(length(ylabel) == 0){
+  if (length(ylabel) == 0) {
     stop(subplots, "is not a valid type. Please choose from the options cpue, len, age, size, or con")
   }
   if (verbose) message("Running Runs Test Diagnostics w/ plots for", datatypes[which(c("cpue", "len", "age", "con") %in% subplots)])
