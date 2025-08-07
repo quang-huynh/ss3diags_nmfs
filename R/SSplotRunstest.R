@@ -186,6 +186,9 @@ SSplotRunstest <- function(ss3rep,
   subplots <- subplots[1]
   datatypes <- c("Index", "Mean length", "Mean age", "Conditional age-at-length")
   ylabel <- datatypes[which(c("cpue", "len", "age", "con") %in% subplots)]
+  if(length(ylabel) == 0){
+    stop(subplots, "is not a valid type. Please choose from the options cpue, len, age, size, or con")
+  }
   if (verbose) message("Running Runs Test Diagnostics w/ plots for", datatypes[which(c("cpue", "len", "age", "con") %in% subplots)])
   if (subplots == "cpue") {
     cpue <- ss3rep[["cpue"]]
@@ -328,7 +331,7 @@ SSplotRunstest <- function(ss3rep,
     points(resid[["Time"]], resid[["residuals"]], pch = pch, bg = point_cols, cex = 1)
     if (legend) {
       legend(legendloc, paste(resid[["Fleet_name"]][1]), bty = "n", y.intersp = -0.2, cex = legendcex + 0.1)
-      legend("topright", legend = c(point_labels, "sigma3 limit"), pch = c(rep(21, n_point_cols), 22), pt.bg = c(unique(point_cols), cols))
+      legend("topright", legend = c(point_labels, "sigma3 limit"), pch = c(rep(21, n_point_cols), 22), pt.bg = c(sort(unique(point_cols)), cols))
     }
 
     axis(1, at = resid[["Yr"]])
