@@ -69,6 +69,8 @@ SSplotRetro(
 \itemize{
 \item \code{"SSB"} Spawning Stock Biomass
 \item \code{"F"} Fishing Mortality
+\item \code{"recruits"} Recruitment
+\item \verb{"recdevs} log Recruitment deviations
 }}
 
 \item{plot}{DEPRECATED. By default, TRUE, Plots (and subplots) are drawn to the

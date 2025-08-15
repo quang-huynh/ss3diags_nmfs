@@ -11,6 +11,8 @@
 #' \itemize{
 #'  \item `"SSB"` Spawning Stock Biomass
 #'  \item `"F"` Fishing Mortality
+#'  \item `"recruits"` Recruitment
+#'  \item `"recdevs` log Recruitment deviations
 #' }
 #' @param xmin optional minimum year shown in plot (default first yr)
 #' @param labels `yaxis` label for biomass (bony fish and sharks)
@@ -222,7 +224,20 @@ SSplotRetro <- function(summaryoutput,
         }
       }
     }
-
+    
+    if (quant=="recruits") {
+      mu <- summaryoutput[["recruits"]]
+      Lower <- summaryoutput[["recruitsLower"]]
+      Upper <- summaryoutput[["recruitsUpper"]]
+      if (is.null(labels)) labels <- "Recruitment"
+    }
+    
+    if (quant=="recdevs") {
+      mu <- summaryoutput[["recdevs"]]
+      Lower <- summaryoutput[["recdevsLower"]]
+      Upper <- summaryoutput[["recdevsUpper"]]
+      if (is.null(labels)) labels <- "log Recruitment deviations"
+    }
 
     ylab <- labels
 
@@ -285,7 +300,7 @@ SSplotRetro <- function(summaryoutput,
 
 
     # Check if uncertainty is measured
-    if (uncertainty == TRUE & sum(exp[, 1] - lower[, 1]) == 0) {
+    if (uncertainty == TRUE & sum(exp[, 1] - lower[, 1], na.rm = TRUE) == 0) {
       if (verbose) message("No uncertainty estimates available from the provided")
       uncertainty <- FALSE
     }
@@ -305,7 +320,10 @@ SSplotRetro <- function(summaryoutput,
     }
 
 
-    if (is.null(ylim)) ylim <- c(0, max(ifelse(uncertainty, max(c(unlist(exp[exp[["Yr"]] >= xmin, 1:nlines]), unlist(upper[upper[["Yr"]] >= xmin, 1]))) * ylimAdj, ylimAdj * max(unlist(exp[exp[["Yr"]] >= xmin, 1:nlines])) * 1.05)))
+    if (is.null(ylim)) {
+      ylim <- c(0, max(ifelse(uncertainty, max(c(unlist(exp[exp[["Yr"]] >= xmin, 1:nlines]), unlist(upper[upper[["Yr"]] >= xmin, 1])), na.rm = TRUE) * ylimAdj, ylimAdj * max(unlist(exp[exp[["Yr"]] >= xmin, 1:nlines]), na.rm = TRUE) * 1.05)))
+      if (quant == "recdevs") ylim[1] <- -1 * ylim[2]
+    }
     if (is.null(xlim)) xlim <- c(max(min(yr), xmin), min(c(max(yr), max(endyrvec + 0.5))))
 
     # hindcast section
